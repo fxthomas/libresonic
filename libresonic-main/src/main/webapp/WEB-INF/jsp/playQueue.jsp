@@ -31,7 +31,7 @@
 
 <body class="bgcolor2 playlistframe" onload="init()">
 
-<span id="dummy-animation-target" style="max-width:50px;display: none"></span>
+<span id="dummy-animation-target" style="max-width: ${model.autoHidePlayQueue ? 50 : 150}px; display: none"></span>
 
 <script type="text/javascript" language="javascript">
     var songs = null;
