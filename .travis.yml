@@ -1,15 +1,29 @@
 language: java
 sudo: required
 jdk:
-  - oraclejdk8
+- oraclejdk8
 cache:
   directories:
-    - $HOME/.m2
+  - "$HOME/.m2"
 install:
-  - sudo apt-get -qq update
-  - sudo apt-get -y install lintian fakeroot rpm python-rpm
-  - git clone https://github.com/rpm-software-management/rpmlint -o rpmlint-1.9
-  - sudo make -C rpmlint install
+- sudo apt-get -qq update
+- sudo apt-get -y install lintian fakeroot rpm python-rpm
+- git clone https://github.com/rpm-software-management/rpmlint -o rpmlint-1.9
+- sudo make -C rpmlint install
 script:
-  - mvn -Pfull,rpm package install
-  - mvn -Pfull -pl libresonic-assembly assembly:single
+- mvn -Pfull,rpm package install
+- mvn -Pfull -pl libresonic-assembly assembly:single
+deploy:
+  provider: releases
+  api_key:
+    secure: "update with travis setup releases"
+  file:
+    - libresonic-installer-debian/target/libresonic-*.deb
+    - libresonic-installer-rpm/target/libresonic-*.rpm
+    - libresonic-assembly/target/libresonic-*-src.zip
+    - libresonic-assembly/target/libresonic-*-standalone.tar.gz
+    - libresonic-assembly/target/libresonic-*-war.zip
+  skip_cleanup: true
+  file_glob: true
+  on:
+    tags: true
