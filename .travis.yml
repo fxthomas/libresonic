@@ -1,15 +1,28 @@
 language: java
 sudo: required
 jdk:
-  - oraclejdk8
+- oraclejdk8
 cache:
   directories:
-    - $HOME/.m2
+  - "$HOME/.m2"
 install:
-  - sudo apt-get -qq update
-  - sudo apt-get -y install lintian fakeroot rpm python-rpm
-  - git clone https://github.com/rpm-software-management/rpmlint -o rpmlint-1.9
-  - sudo make -C rpmlint install
+- sudo apt-get -qq update
+- sudo apt-get -y install lintian fakeroot rpm python-rpm
+- git clone https://github.com/rpm-software-management/rpmlint -o rpmlint-1.9
+- sudo make -C rpmlint install
 script:
-  - mvn -Pfull,rpm package install
-  - mvn -Pfull -pl libresonic-assembly assembly:single
+- mvn -Pfull,rpm package install
+- mvn -Pfull -pl libresonic-assembly assembly:single
+deploy:
+  provider: releases
+  api_key:
+    secure: NwnwoneBDNbX9WWKc9cMWEiYBIBE+jFqzjAJ2Y0Qj1guCfmPzNGxPRVBrOtwTffWjWyNbhM74PJ1Twd+QfbEAhMXuIlyGAjxe1ZQ374zQ747W3Km6jisgY6KlQCd5RJ7u9WATnhppqdWXglDGdCnHWaViJAt48K0L/2FfXvcKPkyUXP8NJv8ekSvLja/2BtIomnqYugLDhoQO7xdegvjbYgwlozaTtnN+gSdLK1WsBCyP8VDpaUJYCgI6Gh5b6ksO9mt18b0gvmMuyTWT6f1TVukDei7R+SIQe9WCLbpetFBOwdmBaFq1He7QAc6vUHS7g8GapQ0teWWv0lgOkF1y+C39Zwvu+EV6fBAYkjtSdisxBuf2LkIr0fGAzQc7I6cgnfMZgJw2cBakKoahjkJ7x9YmIyPGUS/H3+2Z/mNzKgreLiSYsu3dPkzBdmpAdSiN2OPy1iVZFM/5niFajVozLxucR/oKQaYnoEXX6y4Mja9+iy4rDLrJmxb1elDW05VCxKSiVrA/SECjcAg4vuVM76a+Amy9jOPdxv1tknoUclNh+BByoI7SNWHYi2F3sdDHu0AHcduyBwOvOeq+nZ3klndDPoVmfiazPu7R9bPuEPR2NHUXMN5576X6fmrdgLdV9zFHnUGoSdgCE6pIBR+9M03HXIVZUJ/LvTtdZUmdv0=
+  file:
+    - libresonic-installer-debian/target/*.deb
+    - libresonic-installer-rpm/target/*.rpm
+    - libresonic-assembly/target/libresonic-*-src.zip
+    - libresonic-assembly/target/libresonic-*-standalone.tar.gz
+    - libresonic-assembly/target/libresonic-*-war.zip
+  skip_cleanup: true
+  on:
+    tags: true
