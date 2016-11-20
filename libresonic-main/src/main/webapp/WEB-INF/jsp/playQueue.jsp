@@ -515,7 +515,16 @@
     }
 
     function skip(index, position) {
-        if (index < 0 || index >= songs.length) {
+
+        if (index >= songs.length) {
+            playQueueService.reloadSearchCriteria(function(playQueue) {
+                playQueueCallback(playQueue);
+                skip(0);
+            });
+            return;
+        }
+
+        if (index < 0) {
             return;
         }
 

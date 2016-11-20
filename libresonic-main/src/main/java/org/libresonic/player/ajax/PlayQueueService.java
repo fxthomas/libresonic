@@ -148,6 +148,17 @@ public class PlayQueueService {
         return convert(request, player, serverSidePlaylist, offset);
     }
 
+    public PlayQueueInfo reloadSearchCriteria() throws Exception {
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+        Player player = getCurrentPlayer(request, response);
+        PlayQueue playQueue = player.getPlayQueue();
+        if (playQueue.getRandomSearchCriteria() != null) {
+            playQueue.addFiles(false, searchService.getRandomSongs(playQueue.getRandomSearchCriteria()));
+        }
+        return convert(request, player, false);
+    }
+
     public void savePlayQueue(int currentSongIndex, long positionMillis) {
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();

@@ -188,10 +188,7 @@ public class RandomPlayQueueController extends ParameterizableViewController {
         Player player = playerService.getPlayer(request, response);
         PlayQueue playQueue = player.getPlayQueue();
         playQueue.addFiles(shouldAddToPlayList, mediaFileService.getRandomSongs(criteria, user.getUsername()));
-
-        if (request.getParameter("autoRandom") != null) {
-            playQueue.setRandomSearchCriteria(criteria);
-        }
+        playQueue.setRandomSearchCriteria(criteria);
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("reloadFrames", reloadFrames);
